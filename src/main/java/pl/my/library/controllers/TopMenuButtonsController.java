@@ -12,6 +12,7 @@ public class TopMenuButtonsController {
     public static final String FXML_STATISTICS_FXML = "/fxml/Statistics.fxml";
     public static final String FXML_LIBRARY_FXML = "/fxml/Library.fxml";
     public static final String FXML_LISTBOOKS_FXML = "/fxml/ListBooks.fxml";
+    public static final String FXML_ADD_BOOK_FXML = "/fxml/AddBook.fxml";
     private MainController mainController;
 
     @FXML
@@ -45,7 +46,7 @@ public class TopMenuButtonsController {
             toggleButtons.getSelectedToggle().setSelected(false);
         }
 
-        mainController.setCenter("/fxml/AddBook.fxml");
+        mainController.setCenter(FXML_ADD_BOOK_FXML);
 
 
     }

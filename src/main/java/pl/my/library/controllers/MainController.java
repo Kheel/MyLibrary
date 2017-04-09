@@ -6,11 +6,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pl.my.library.utils.DialogsUtils;
+import pl.my.library.utils.FxmlUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -31,21 +35,15 @@ public class MainController {
 
     public void setCenter (String fxmlPath)
     {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(fxmlPath));
-        ResourceBundle bundle = ResourceBundle.getBundle("bundles.messages");
-        loader.setResources(bundle);
-        Parent parent = null;
-        try {
-            parent = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        borderPane.setCenter(parent);
+        borderPane.setCenter(FxmlUtils.fxmlLoader(fxmlPath));
     }
 
     public void closeApplication(ActionEvent actionEvent) {
-        Platform.exit();
-        System.exit(0);
+        Optional<ButtonType> result = DialogsUtils.confirmationDialog();
+        if(result.get()==ButtonType.OK) {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     public void setCaspian() {
@@ -67,5 +65,6 @@ public class MainController {
 
 
     public void about(ActionEvent actionEvent) {
+        DialogsUtils.dialogAboutApplication();
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.my.library.controllers.TopMenuButtonsController">
+<HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.my.library.controllers.TopMenuButtonsController">
    <children>
       <ToggleButton mnemonicParsing="false" onAction="#openLibrary" prefHeight="80.0" prefWidth="160.0" text="%library">
          <toggleGroup>
@@ -22,6 +22,24 @@
             <ImageView fitHeight="47.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/Książki-ikona.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="80.0" prefWidth="160.0" text="%add.category">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/Kategoria-ikona.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#addBook" prefHeight="80.0" prefWidth="160.0" text="%authors">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/Autor-ikona.png" />
                </image>
             </ImageView>
          </graphic>

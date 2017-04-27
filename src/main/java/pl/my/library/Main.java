@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pl.my.library.utils.FxmlUtils;
+import pl.my.library.database.dbutils.DbManager;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,6 +32,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle(FxmlUtils.getResourceBundle().getString("title.application"));
         primaryStage.show();
+
+        DbManager.initDatabase();
 
     }
 

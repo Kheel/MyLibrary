@@ -13,6 +13,8 @@ public class TopMenuButtonsController {
     public static final String FXML_LIBRARY_FXML = "/fxml/Library.fxml";
     public static final String FXML_LISTBOOKS_FXML = "/fxml/ListBooks.fxml";
     public static final String FXML_ADD_BOOK_FXML = "/fxml/AddBook.fxml";
+    public static final String FXML_ADD_CATEGORY_FXML = "/fxml/AddCategory.fxml";
+
     private MainController mainController;
 
     @FXML
@@ -39,15 +41,26 @@ public class TopMenuButtonsController {
         this.mainController = mainController;
     }
 
-    public void addBook(ActionEvent actionEvent) {
-
+    private void resetToggleButtons() {
         if(toggleButtons.getSelectedToggle()!=null)
         {
             toggleButtons.getSelectedToggle().setSelected(false);
         }
+    }
+
+    public void addBook(ActionEvent actionEvent) {
+
+        resetToggleButtons();
 
         mainController.setCenter(FXML_ADD_BOOK_FXML);
 
 
+    }
+
+    public void addCategory(ActionEvent actionEvent) {
+
+        resetToggleButtons();
+
+        mainController.setCenter(FXML_ADD_CATEGORY_FXML);
     }
 }

@@ -20,6 +20,8 @@ public class AuthorModel {
 
     private ObjectProperty<AuthorFX> authorFXObjectProperty = new SimpleObjectProperty<>(new AuthorFX());
 
+    private ObjectProperty<AuthorFX> authorFXObjectPropertyEdit = new SimpleObjectProperty<>(new AuthorFX());
+
     private ObservableList<AuthorFX> authorFXObservableList = FXCollections.observableArrayList();
 
     public void init() throws ApplicationException {
@@ -33,15 +35,41 @@ public class AuthorModel {
         DbManager.closeConnectionSource();
     }
 
+    public void saveAuthorEditInDataBase() throws ApplicationException {
+        saveOrUpdate(this.getAuthorFXObjectPropertyEdit());
+    }
 
     public void saveAuthorInDataBase() throws ApplicationException {
+        saveOrUpdate(this.getAuthorFXObjectProperty());
+    }
+
+    public void deleteAuthorInDataBase() throws ApplicationException {
         AuthorDao authorDao = new AuthorDao(DbManager.getConnectionSource());
-        Author author = ConverterAuthor.convertAuthorFXToAuthor(this.getAuthorFXObjectProperty());
+        authorDao.deleteById(Author.class, this.getAuthorFXObjectPropertyEdit().getId());
+        DbManager.closeConnectionSource();
+        this.init();
+    }
+
+    private void saveOrUpdate(AuthorFX authorFXObjectPropertyEdit) throws ApplicationException {
+        AuthorDao authorDao = new AuthorDao(DbManager.getConnectionSource());
+        Author author = ConverterAuthor.convertAuthorFXToAuthor(authorFXObjectPropertyEdit);
         authorDao.createOrUpdate(author);
         DbManager.closeConnectionSource();
         this.init();
     }
 
+
+    public AuthorFX getAuthorFXObjectPropertyEdit() {
+        return authorFXObjectPropertyEdit.get();
+    }
+
+    public ObjectProperty<AuthorFX> authorFXObjectPropertyEditProperty() {
+        return authorFXObjectPropertyEdit;
+    }
+
+    public void setAuthorFXObjectPropertyEdit(AuthorFX authorFXObjectPropertyEdit) {
+        this.authorFXObjectPropertyEdit.set(authorFXObjectPropertyEdit);
+    }
 
     public AuthorFX getAuthorFXObjectProperty() {
         return authorFXObjectProperty.get();
@@ -62,4 +90,6 @@ public class AuthorModel {
     public void setAuthorFXObservableList(ObservableList<AuthorFX> authorFXObservableList) {
         this.authorFXObservableList = authorFXObservableList;
     }
+
+
 }

@@ -35,7 +35,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#addBook" prefHeight="80.0" prefWidth="160.0" text="%authors">
+      <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#addAuthor" prefHeight="80.0" prefWidth="160.0" text="%add.author">
          <graphic>
             <ImageView fitHeight="47.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                <image>

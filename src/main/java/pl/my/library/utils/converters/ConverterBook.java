@@ -4,6 +4,8 @@ import pl.my.library.database.models.Book;
 import pl.my.library.modelFX.BookFX;
 import pl.my.library.utils.Utils;
 
+
+
 /**
  * Created by Admin on 2017-06-03.
  */
@@ -20,5 +22,19 @@ public class ConverterBook {
         book.setAddedDate(Utils.convertToDate(bookFX.getAddedDate()));
 
         return book;
+    }
+
+    public static BookFX convertToBookFX (Book book) {
+        BookFX bookFX= new BookFX();
+        bookFX.setId(book.getId());
+        bookFX.setTitle(book.getTitle());
+        bookFX.setDescription(book.getDescription());
+        bookFX.setRating(book.getRating());
+        bookFX.setIsbn(book.getIsbn());
+        bookFX.setRelaseDate(Utils.convertToLocalDate(book.getDateRelease()));
+        bookFX.setAuthorFX(ConverterAuthor.convertToAuthorFX(book.getAuthor()));
+        bookFX.setCategoryFX(ConverterCategory.convertToCategoryFX(book.getCategory()));
+
+        return bookFX;
     }
 }

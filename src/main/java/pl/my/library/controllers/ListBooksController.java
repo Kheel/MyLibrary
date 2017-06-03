@@ -1,6 +1,8 @@
 package pl.my.library.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import pl.my.library.modelFX.AuthorFX;
@@ -11,12 +13,19 @@ import pl.my.library.utils.DialogsUtils;
 import pl.my.library.utils.exceptions.ApplicationException;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 
 /**
  * Created by Admin on 2017-06-03.
  */
 public class ListBooksController {
+
+    @FXML
+    private ComboBox categoryComboBox;
+
+    @FXML
+    private ComboBox authorComboBox;
 
     @FXML
     private TableView<BookFX> booksTableView;
@@ -57,6 +66,11 @@ public class ListBooksController {
         } catch (ApplicationException e) {
             DialogsUtils.errorDialog(e.getMessage());
         }
+        this.categoryComboBox.setItems(this.listBooksModel.getCategoryFXObservableList());
+        this.authorComboBox.setItems(this.listBooksModel.getAuthorFXObservableList());
+
+        this.listBooksModel.categoryFXObjectPropertyProperty().bind(this.categoryComboBox.valueProperty());
+        this.listBooksModel.authorFXObjectPropertyProperty().bind(this.authorComboBox.valueProperty());
 
         this.booksTableView.setItems(this.listBooksModel.getBookFXObservableList());
         this.titleColumn.setCellValueFactory(e -> e.getValue().titleProperty());
@@ -70,6 +84,18 @@ public class ListBooksController {
 
     }
 
+    public void filterOnActionComboBox() {
+        this.listBooksModel.filterBooksList();
+
+    }
+
+    public void clearCategoryComboBox () {
+        this.categoryComboBox.getSelectionModel().clearSelection();
+    }
+
+    public void clearAuthorComboBox () {
+        this.authorComboBox.getSelectionModel().clearSelection();
+    }
 
 
 }

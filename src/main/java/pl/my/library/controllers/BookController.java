@@ -44,7 +44,6 @@ public class BookController {
 
         bindings();
 
-
     }
 
     private void bindings() {

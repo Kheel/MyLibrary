@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="900.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.my.library.controllers.ListBooksController">
    <children>
-      <Label text="ListBooks" />
+      <HBox alignment="CENTER" prefHeight="31.0" prefWidth="580.0" spacing="10.0">
+         <children>
+            <Label text="%category" />
+            <ComboBox prefWidth="150.0" />
+            <Label text="%author" />
+            <ComboBox prefWidth="150.0" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <TableView prefHeight="366.0" prefWidth="880.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="%title.book" />
+          <TableColumn prefWidth="75.0" text="%desc.book" />
+            <TableColumn prefWidth="75.0" text="%author" />
+            <TableColumn prefWidth="75.0" text="%category" />
+            <TableColumn prefWidth="75.0" text="%rating.book" />
+            <TableColumn prefWidth="75.0" text="%isbn.book" />
+            <TableColumn prefWidth="87.0" text="%release.book" />
+            <TableColumn prefWidth="63.0" text="%price.book" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
-</HBox>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

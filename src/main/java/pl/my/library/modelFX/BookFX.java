@@ -17,7 +17,7 @@ public class BookFX {
     private ObjectProperty<LocalDate> relaseDate = new SimpleObjectProperty<>();
     private SimpleStringProperty isbn = new SimpleStringProperty();
     private IntegerProperty rating = new SimpleIntegerProperty();
-    private ObjectProperty<LocalDate> addedDate = new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDate> addedDate = new SimpleObjectProperty(LocalDate.now());
 
     public int getId() {
         return id.get();

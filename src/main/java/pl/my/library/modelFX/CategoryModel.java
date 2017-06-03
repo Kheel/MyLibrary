@@ -25,11 +25,10 @@ public class CategoryModel {
     private TreeItem<String> root = new TreeItem<>();
 
     public void init() throws ApplicationException {
-        CategoryDao categoryDao = new CategoryDao(DbManager.getConnectionSource());
+        CategoryDao categoryDao = new CategoryDao();
         List<Category> categories = categoryDao.queryForAll(Category.class);
         initCategoryList(categories);
         initRoot(categories);
-        DbManager.closeConnectionSource();
     }
 
     private void initRoot(List<Category> categories) {
@@ -52,27 +51,24 @@ public class CategoryModel {
     }
 
     public void deleteCategoryById() throws ApplicationException {
-        CategoryDao categoryDao = new CategoryDao(DbManager.getConnectionSource());
+        CategoryDao categoryDao = new CategoryDao();
         categoryDao.deleteById(Category.class, category.getValue().getId());
-        DbManager.closeConnectionSource();
         init();
     }
 
     public void saveCategoryInDataBase (String name) throws ApplicationException {
-        CategoryDao categoryDao = new CategoryDao(DbManager.getConnectionSource());
+        CategoryDao categoryDao = new CategoryDao();
         Category category = new Category();
         category.setName(name);
         categoryDao.createOrUpdate(category);
-        DbManager.closeConnectionSource();
         init();
     }
 
     public void updateCategoryInDataBase() throws ApplicationException {
-        CategoryDao categoryDao = new CategoryDao(DbManager.getConnectionSource());
+        CategoryDao categoryDao = new CategoryDao();
         Category tempCategory = categoryDao.findById(Category.class , getCategory().getId());
         tempCategory.setName(getCategory().getName());
         categoryDao.createOrUpdate(tempCategory);
-        DbManager.closeConnectionSource();
         init();
     }
 

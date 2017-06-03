@@ -25,14 +25,14 @@ public class FillDatabase {
         book1.setAuthor(author1);
         book1.setTitle("Makbet");
         book1.setIsbn("8386740418l");
-        book1.setRating("4");
+        book1.setRating(4);
         book1.setDateRelease(new Date());
         book1.setAddedDate(new Date());
 
 
         Category category2 = new Category();
         category2.setName("Sensacja");
-        CategoryDao categoryDao = new CategoryDao(DbManager.getConnectionSource());
+        CategoryDao categoryDao = new CategoryDao();
         try {
             categoryDao.createOrUpdate(category2);
             DbManager.closeConnectionSource();
@@ -51,7 +51,7 @@ public class FillDatabase {
         book2.setAuthor(author2);
         book2.setTitle("Gottland");
         book2.setIsbn("83867404182");
-        book2.setRating("5");
+        book2.setRating(5);
         book2.setDateRelease(new Date());
         book2.setAddedDate(new Date());
 
@@ -65,7 +65,7 @@ public class FillDatabase {
         book3.setAuthor(author3);
         book3.setTitle("Władca Pierścieni");
         book3.setIsbn("83867404183");
-        book3.setRating("5");
+        book3.setRating(5);
         book3.setDateRelease(new Date());
         book3.setAddedDate(new Date());
 
@@ -77,11 +77,11 @@ public class FillDatabase {
         book4.setAuthor(author3);
         book4.setTitle("Kolor magii");
         book4.setIsbn("83867404184");
-        book4.setRating("3");
+        book4.setRating(3);
         book4.setDateRelease(new Date());
         book4.setAddedDate(new Date());
 
-        BookDao bookDao = new BookDao(DbManager.getConnectionSource());
+        BookDao bookDao = new BookDao();
         try {
             bookDao.createOrUpdate(book1);
             bookDao.createOrUpdate(book2);

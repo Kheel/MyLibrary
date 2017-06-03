@@ -25,14 +25,13 @@ public class AuthorModel {
     private ObservableList<AuthorFX> authorFXObservableList = FXCollections.observableArrayList();
 
     public void init() throws ApplicationException {
-        AuthorDao authorDao = new AuthorDao(DbManager.getConnectionSource());
+        AuthorDao authorDao = new AuthorDao();
         List<Author> authorList = authorDao.queryForAll(Author.class);
         this.authorFXObservableList.clear();
         authorList.forEach(author ->{
             AuthorFX authorFX = ConverterAuthor.convertToAuthorFX(author);
             this.getAuthorFXObservableList().add(authorFX);
         } );
-        DbManager.closeConnectionSource();
     }
 
     public void saveAuthorEditInDataBase() throws ApplicationException {
@@ -44,17 +43,15 @@ public class AuthorModel {
     }
 
     public void deleteAuthorInDataBase() throws ApplicationException {
-        AuthorDao authorDao = new AuthorDao(DbManager.getConnectionSource());
+        AuthorDao authorDao = new AuthorDao();
         authorDao.deleteById(Author.class, this.getAuthorFXObjectPropertyEdit().getId());
-        DbManager.closeConnectionSource();
         this.init();
     }
 
     private void saveOrUpdate(AuthorFX authorFXObjectPropertyEdit) throws ApplicationException {
-        AuthorDao authorDao = new AuthorDao(DbManager.getConnectionSource());
+        AuthorDao authorDao = new AuthorDao();
         Author author = ConverterAuthor.convertAuthorFXToAuthor(authorFXObjectPropertyEdit);
         authorDao.createOrUpdate(author);
-        DbManager.closeConnectionSource();
         this.init();
     }
 

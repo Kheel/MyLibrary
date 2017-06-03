@@ -36,8 +36,8 @@ public class Book implements BaseModel {
     @DatabaseField(columnName = "DATE_RELEASE", dataType = DataType.DATE_STRING, format = "yyyy-MM-DD")
     private Date dateRelease;
 
-    @DatabaseField(columnName = "RATING", width = 1)
-    private String rating;
+    @DatabaseField(columnName = "RATING")
+    private int rating;
 
     @DatabaseField(columnName = "BORROWED", defaultValue = "false")
     private boolean borrowed;
@@ -104,11 +104,11 @@ public class Book implements BaseModel {
         this.description = description;
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

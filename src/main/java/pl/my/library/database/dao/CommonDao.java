@@ -23,17 +23,22 @@ import java.util.List;
         private static final Logger LOGGER = LoggerFactory.getLogger(CommonDao.class);
         protected final ConnectionSource connectionSource;
 
-        public CommonDao(ConnectionSource connectionSource) {
-            this.connectionSource = connectionSource;
+        public CommonDao() {
+            this.connectionSource = DbManager.getConnectionSource();
         }
 
-        public <T extends BaseModel, I> void createOrUpdate(BaseModel baseModel) throws ApplicationException {
+
+
+    public <T extends BaseModel, I> void createOrUpdate(BaseModel baseModel) throws ApplicationException {
             Dao<T, I> dao = getDao((Class<T>) baseModel.getClass());
             try {
                 dao.createOrUpdate((T) baseModel);
             } catch (SQLException e) {
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.create.update"));
+            }
+            finally {
+                this.closeDbConnection();
             }
         }
 
@@ -45,6 +50,9 @@ import java.util.List;
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.refresh"));
             }
+            finally {
+                this.closeDbConnection();
+            }
         }
 
         public <T extends BaseModel, I> void delete(BaseModel baseModel) throws ApplicationException {
@@ -54,6 +62,9 @@ import java.util.List;
             } catch (SQLException e) {
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.delete"));
+            }
+            finally {
+                this.closeDbConnection();
             }
         }
 
@@ -65,6 +76,9 @@ import java.util.List;
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.delete"));
             }
+            finally {
+                this.closeDbConnection();
+            }
         }
 
     public <T extends BaseModel, I> T findById(Class<T> cls, Integer id) throws ApplicationException{
@@ -74,6 +88,9 @@ import java.util.List;
         } catch (SQLException e) {
             LOGGER.warn(e.getCause().getMessage());
             throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.not.found"));
+        }
+        finally {
+            this.closeDbConnection();
         }
     }
 
@@ -85,6 +102,9 @@ import java.util.List;
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
             }
+            finally {
+                this.closeDbConnection();
+            }
         }
 
 
@@ -95,10 +115,21 @@ import java.util.List;
                 LOGGER.warn(e.getCause().getMessage());
                 throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.get.dao"));
             }
+            finally {
+                this.closeDbConnection();
+            }
         }
 
         public <T extends BaseModel, I> QueryBuilder<T, I> getQueryBuilder(Class<T> cls) throws ApplicationException {
             Dao<T, I> dao = getDao(cls);
             return dao.queryBuilder();
+        }
+
+        private void closeDbConnection() throws ApplicationException {
+            try {
+                this.connectionSource.close();
+            } catch (IOException e) {
+                throw new ApplicationException(FxmlUtils.getResourceBundle().getString("error.get.dao"));
+            }
         }
     }

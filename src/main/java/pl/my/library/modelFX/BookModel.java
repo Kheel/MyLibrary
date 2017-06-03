@@ -5,11 +5,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import pl.my.library.database.dao.AuthorDao;
+import pl.my.library.database.dao.BookDao;
 import pl.my.library.database.dao.CategoryDao;
 import pl.my.library.database.dbutils.DbManager;
 import pl.my.library.database.models.Author;
+import pl.my.library.database.models.Book;
 import pl.my.library.database.models.Category;
 import pl.my.library.utils.converters.ConverterAuthor;
+import pl.my.library.utils.converters.ConverterBook;
 import pl.my.library.utils.converters.ConverterCategory;
 import pl.my.library.utils.exceptions.ApplicationException;
 
@@ -31,25 +34,40 @@ public class BookModel {
     }
 
     private void initCategoryList() throws ApplicationException {
-        CategoryDao categoryDao = new CategoryDao((DbManager.getConnectionSource()));
+        CategoryDao categoryDao = new CategoryDao();
         List<Category> categoryList = categoryDao.queryForAll(Category.class);
         categoryFXObservableList.clear();
         categoryList.forEach(c->{
             CategoryFX categoryFX = ConverterCategory.convertToCategoryFX(c);
             categoryFXObservableList.add(categoryFX);
         });
-        DbManager.closeConnectionSource();
     }
 
     private void initAuthorList() throws ApplicationException {
-        AuthorDao authorDao = new AuthorDao((DbManager.getConnectionSource()));
+        AuthorDao authorDao = new AuthorDao();
         List<Author> authorList = authorDao.queryForAll(Author.class);
         this.authorFXObservableList.clear();
         authorList.forEach(c->{
             AuthorFX authorFX = ConverterAuthor.convertToAuthorFX(c);
             authorFXObservableList.add(authorFX);
         });
-        DbManager.closeConnectionSource();
+    }
+
+    public void saveBookInDataBase () throws ApplicationException {
+        Book book = ConverterBook.convertToBook(this.getBookFXObjectProperty());
+
+        CategoryDao categoryDao = new CategoryDao();
+        Category category = categoryDao.findById(Category.class, this.getBookFXObjectProperty().getCategoryFX().getId());
+        book.setCategory(category);
+
+        AuthorDao authorDao = new AuthorDao();
+        Author author = authorDao.findById(Author.class, this.getBookFXObjectProperty().getAuthorFX().getId());
+        book.setAuthor(author);
+
+        BookDao bookDao = new BookDao();
+        bookDao.createOrUpdate(book);
+
+
     }
 
     public ObservableList<CategoryFX> getCategoryFXObservableList() {

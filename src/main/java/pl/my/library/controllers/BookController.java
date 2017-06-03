@@ -60,7 +60,10 @@ public class BookController {
     }
 
     public void addBookOnAction() {
-        System.out.println(this.bookModel.getBookFXObjectProperty().toString());
-
+        try {
+            this.bookModel.saveBookInDataBase();
+        } catch (ApplicationException e) {
+            DialogsUtils.errorDialog(e.getMessage());
+        }
     }
 }

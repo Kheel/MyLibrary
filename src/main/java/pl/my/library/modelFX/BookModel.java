@@ -97,4 +97,5 @@ public class BookModel {
     public void setBookFXObjectProperty(BookFX bookFXObjectProperty) {
         this.bookFXObjectProperty.set(bookFXObjectProperty);
     }
+
 }

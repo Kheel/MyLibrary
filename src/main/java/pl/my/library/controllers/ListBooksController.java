@@ -2,18 +2,22 @@ package pl.my.library.controllers;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pl.my.library.modelFX.AuthorFX;
 import pl.my.library.modelFX.BookFX;
 import pl.my.library.modelFX.CategoryFX;
 import pl.my.library.modelFX.ListBooksModel;
 import pl.my.library.utils.DialogsUtils;
+import pl.my.library.utils.FxmlUtils;
 import pl.my.library.utils.exceptions.ApplicationException;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -31,28 +35,31 @@ public class ListBooksController {
     private TableView<BookFX> booksTableView;
 
     @FXML
-    private TableColumn<BookFX,String> titleColumn;
+    private TableColumn<BookFX, String> titleColumn;
 
     @FXML
-    private TableColumn<BookFX,String> descColumn;
+    private TableColumn<BookFX, String> descColumn;
 
     @FXML
-    private TableColumn<BookFX,AuthorFX> authorColumn;
+    private TableColumn<BookFX, AuthorFX> authorColumn;
 
     @FXML
-    private TableColumn<BookFX,CategoryFX> categoryColumn;
+    private TableColumn<BookFX, CategoryFX> categoryColumn;
 
     @FXML
-    private TableColumn<BookFX,Number> ratingColumn;
+    private TableColumn<BookFX, Number> ratingColumn;
 
     @FXML
-    private TableColumn<BookFX,String> isbnColumn;
+    private TableColumn<BookFX, String> isbnColumn;
 
     @FXML
-    private TableColumn<BookFX,LocalDate> releaseColumn;
+    private TableColumn<BookFX, LocalDate> releaseColumn;
 
     @FXML
     private TableColumn<BookFX, BookFX> deleteColumn;
+
+    @FXML
+    private TableColumn<BookFX, BookFX> editColumn;
 
     private ListBooksModel listBooksModel;
 
@@ -60,9 +67,8 @@ public class ListBooksController {
     //private TableColumn<BookFX,Double> priceColumn;
 
 
-
     @FXML
-    void initialize(){
+    void initialize() {
         this.listBooksModel = new ListBooksModel();
         try {
             this.listBooksModel.init();
@@ -85,37 +91,75 @@ public class ListBooksController {
         this.authorColumn.setCellValueFactory(e -> e.getValue().authorFXProperty());
         this.categoryColumn.setCellValueFactory(e -> e.getValue().categoryFXProperty());
         this.deleteColumn.setCellValueFactory(e -> new SimpleObjectProperty<>(e.getValue()));
+        this.editColumn.setCellValueFactory(e -> new SimpleObjectProperty<>(e.getValue()));
 
-        this.deleteColumn.setCellFactory(param -> new TableCell<BookFX, BookFX>(){
-            Button button = createDeleteButton();
+        this.deleteColumn.setCellFactory(param -> new TableCell<BookFX, BookFX>() {
+                    Button deleteButton = createButton("/icons/delete-button.png");
+
+                    @Override
+                    protected void updateItem(BookFX item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                            return;
+                        }
+
+                        if (!empty) {
+                            setGraphic(deleteButton);
+                            deleteButton.setOnAction(event -> {
+                                try {
+                                    listBooksModel.deleteBook(item);
+                                } catch (ApplicationException e) {
+                                    DialogsUtils.errorDialog(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+                }
+        );
+
+        this.editColumn.setCellFactory(param -> new TableCell<BookFX, BookFX>() {
+            Button editButton = createButton("/icons/edit-button.png");
 
             @Override
             protected void updateItem(BookFX item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if(empty){
+                if (empty) {
                     setGraphic(null);
                     return;
                 }
 
-                if(!empty){
-                setGraphic(button);
-                button.setOnAction(event -> {
-                    try {
-                        listBooksModel.deleteBook(item);
-                    } catch (ApplicationException e) {
-                        DialogsUtils.errorDialog(e.getMessage());
-                    }
-                });
+                if (!empty) {
+                    setGraphic(editButton);
+                    editButton.setOnAction(event -> {
+                        FXMLLoader loader = FxmlUtils.getLoader("/fxml/AddBook.fxml");
+                        Scene scene = null;
+                        try {
+                            scene = new Scene(loader.load());
+                        } catch (IOException e) {
+                            DialogsUtils.errorDialog(e.getMessage());
+                        }
+
+                        BookController controller = loader.getController();
+                        controller.getBookModel().setBookFXObjectProperty(item);
+                        controller.bindings();
+
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.showAndWait();
+                    });
                 }
             }
         });
-
     }
 
-    private Button createDeleteButton(){
+
+    private Button createButton(String path) {
         Button button = new Button();
-        Image image = new Image(this.getClass().getResource("/icons/delete-button.png").toString());
+        Image image = new Image(this.getClass().getResource(path).toString());
         ImageView imageView = new ImageView(image);
         button.setGraphic(imageView);
         return button;
@@ -126,11 +170,11 @@ public class ListBooksController {
 
     }
 
-    public void clearCategoryComboBox () {
+    public void clearCategoryComboBox() {
         this.categoryComboBox.getSelectionModel().clearSelection();
     }
 
-    public void clearAuthorComboBox () {
+    public void clearAuthorComboBox() {
         this.authorComboBox.getSelectionModel().clearSelection();
     }
 

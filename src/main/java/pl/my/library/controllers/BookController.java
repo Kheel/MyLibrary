@@ -46,16 +46,18 @@ public class BookController {
 
     }
 
-    private void bindings() {
+    public void bindings() {
         this.categoryComboBox.setItems(this.bookModel.getCategoryFXObservableList());
         this.authorComboBox.setItems(this.bookModel.getAuthorFXObservableList());
-        this.bookModel.getBookFXObjectProperty().categoryFXProperty().bind(this.categoryComboBox.valueProperty());
-        this.bookModel.getBookFXObjectProperty().authorFXProperty().bind(this.authorComboBox.valueProperty());
-        this.bookModel.getBookFXObjectProperty().ratingProperty().bind(this.ratingSlider.valueProperty());
-        this.bookModel.getBookFXObjectProperty().isbnProperty().bind(this.isbnTextField.textProperty());
-        this.bookModel.getBookFXObjectProperty().descriptionProperty().bind(this.descTextArea.textProperty());
-        this.bookModel.getBookFXObjectProperty().titleProperty().bind(this.titleTextField.textProperty());
-        this.bookModel.getBookFXObjectProperty().relaseDateProperty().bind(this.dateRelasePicker.valueProperty());
+        
+        this.authorComboBox.valueProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().authorFXProperty());
+        this.categoryComboBox.valueProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().categoryFXProperty());
+        this.titleTextField.textProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().titleProperty());
+        this.descTextArea.textProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().descriptionProperty());
+        this.ratingSlider.valueProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().ratingProperty());
+        this.isbnTextField.textProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().isbnProperty());
+        this.dateRelasePicker.valueProperty().bindBidirectional(this.bookModel.getBookFXObjectProperty().relaseDateProperty());
+
     }
 
     public void addBookOnAction() {
@@ -64,5 +66,9 @@ public class BookController {
         } catch (ApplicationException e) {
             DialogsUtils.errorDialog(e.getMessage());
         }
+    }
+
+    public BookModel getBookModel() {
+        return bookModel;
     }
 }

@@ -39,6 +39,7 @@ public class ListBooksModel {
     public void init() throws ApplicationException {
         BookDao bookDao = new BookDao();
         List<Book> books = bookDao.queryForAll(Book.class);
+        bookFXList.clear();
         books.forEach(book ->{
             this.bookFXList.add(ConverterBook.convertToBookFX(book));
         });
@@ -147,5 +148,11 @@ public class ListBooksModel {
 
     public void setCategoryFXObjectProperty(CategoryFX categoryFXObjectProperty) {
         this.categoryFXObjectProperty.set(categoryFXObjectProperty);
+    }
+
+    public void deleteBook(BookFX bookFX) throws ApplicationException {
+        BookDao bookDao= new BookDao();
+        bookDao.deleteById(Book.class, bookFX.getId());
+        init();
     }
 }
